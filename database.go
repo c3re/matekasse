@@ -58,3 +58,18 @@ func getUser(id ID) account {
 	ce(err)
 	return returner
 }
+
+func getAllUsers() []nameIdPair {
+	returner := make([]nameIdPair, 0)
+	r, err := db.Query("SELECT id, name FROM matekasse WHERE name NOT LIKE ''")
+	ce(err)
+	defer r.Close()
+	for r.Next() {
+		var id ID
+		var name string
+		r.Scan(&id, &name)
+		returner = append(returner, nameIdPair{id, name})
+	}
+	return returner
+
+}

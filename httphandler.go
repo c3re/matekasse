@@ -23,6 +23,8 @@ func route(w http.ResponseWriter, r *http.Request) {
 		get(w, r)
 	} else if res, _ = regexp.MatchString(`^/set/\d+/(\+|-)\d+$`, r.URL.Path); res {
 		set(w, r)
+	} else if res, _ = regexp.MatchString(`^/getallusers$`, r.URL.Path); res {
+		handleGetAllUsers(w, r)
 	} else {
 		sendHelp(w, r)
 	}
@@ -50,6 +52,12 @@ func sendHelp(w http.ResponseWriter, r *http.Request) {
 
 func respond(i ID, w http.ResponseWriter, r *http.Request) {
 	json, err := json.Marshal(getUser(ID(i)))
+	ce(err)
+	fmt.Fprintf(w, string(json))
+}
+
+func handleGetAllUsers(w http.ResponseWriter, r *http.Request) {
+	json, err := json.Marshal(getAllUsers())
 	ce(err)
 	fmt.Fprintf(w, string(json))
 }
