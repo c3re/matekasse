@@ -25,6 +25,8 @@ func route(w http.ResponseWriter, r *http.Request) {
 		set(w, r)
 	} else if res, _ = regexp.MatchString(`^/getallusers$`, r.URL.Path); res {
 		handleGetAllUsers(w, r)
+	} else if res, _ = regexp.MatchString(`^/sum$`, r.URL.Path); res {
+		handleSum(w, r)
 	} else {
 		sendHelp(w, r)
 	}
@@ -60,4 +62,8 @@ func handleGetAllUsers(w http.ResponseWriter, r *http.Request) {
 	json, err := json.Marshal(getAllUsers())
 	ce(err)
 	fmt.Fprintf(w, string(json))
+}
+
+func handleSum(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "{\"sum\":%d}", getSum())
 }

@@ -73,3 +73,10 @@ func getAllUsers() []nameIdPair {
 	return returner
 
 }
+
+func getSum() int {
+	var returner int
+	err := db.QueryRow("SELECT SUM(balance) FROM matekasse").Scan(&returner)
+	ce(err)
+	return returner
+}
