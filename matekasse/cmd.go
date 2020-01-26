@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-const helptext string = "matekasse usage: \n\n -l IF:port default: *:80 \n -f DB-File default: matekasse.sqlite \n -h print help and exit\n"
+const helptext string = "matekasse usage: \n\n -l IF:port default: *:80 \n -f DB-File default: matekasse.sqlite \n -e extern transaction script default: none\n -h print help and exit\n"
 
 func main() {
 	conf := true
@@ -23,6 +23,13 @@ func main() {
 			i++
 			if i < len(os.Args) {
 				mk.SetDb(os.Args[i])
+			} else {
+				conf = false
+			}
+		case "-e":
+			i++
+			if i < len(os.Args) {
+				mk.SetScript(os.Args[i])
 			} else {
 				conf = false
 			}

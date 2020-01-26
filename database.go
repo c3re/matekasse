@@ -3,7 +3,10 @@ package matekasse
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	_ "github.com/mattn/go-sqlite3"
+	"os/exec"
+	"strconv"
 )
 
 var db *sql.DB
@@ -40,6 +43,13 @@ func executeBooking(id ID, amount int) {
 	}
 	_, err := db.Exec("UPDATE matekasse SET balance = balance + ? WHERE id=?", amount, id)
 	ce(err)
+	if script != "" {
+		cmd := exec.Command(script, strconv.FormatUint(uint64(id), 10), strconv.Itoa(amount))
+		err = cmd.Run()
+		if err != nil {
+			fmt.Println("Error in command execution: ", err)
+		}
+	}
 }
 
 func exists(id ID) bool {
